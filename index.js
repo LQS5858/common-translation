@@ -18,6 +18,7 @@ commander.option('-k, --key', '您的应用密钥')
 commander.option('-a, --appkey', '您的应用ID')
 commander.option('-f, --file', '要翻译的文件目录')
 commander.option('-o, --output', '翻译输出目录')
+commander.option('-t, --to', '目标语言')
 
 // 解析
 commander.parse(process.argv)
@@ -25,7 +26,7 @@ commander.parse(process.argv)
 const outputKey = {}
 const url = 'http://openapi.youdao.com/api'
 
-function main() {
+function main () {
   if (!argv.q && !argv.query && !argv.f && !argv.file) {
     console.warn('翻译结束，缺少翻译内容！！！')
     return
@@ -49,7 +50,7 @@ function main() {
     appKey: appKey,
     salt: salt,
     from: '',
-    to: 'en',
+    to: argv.t || argv.to,
     sign: sign
   }
   const bar = new ProgressBar('loading [:bar] :rate/bps :percent :etas', {
@@ -76,7 +77,7 @@ function main() {
 }
 
 // 加载翻译文件
-function loadFile(file) {
+function loadFile (file) {
   let str = ''
   try {
     const data = require(path.join(process.cwd(), file))
@@ -98,7 +99,7 @@ function loadFile(file) {
 }
 
 // 输出翻译文件
-function outputFile(str) {
+function outputFile (str) {
   const content = {}
   const arr = str.split('\n')
   arr.forEach((k, i) => {
@@ -106,7 +107,7 @@ function outputFile(str) {
   })
   const name = md5(Date.now() + 'byron')
   const file = path.join(process.cwd(), `${name}.json`)
-  fs.writeFile(file, JSON.stringify(content), function(err) {
+  fs.writeFile(file, JSON.stringify(content), function (err) {
     if (err) {
       return console.log(err)
     }
