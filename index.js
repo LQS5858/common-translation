@@ -50,7 +50,7 @@ function main () {
     appKey: appKey,
     salt: salt,
     from: '',
-    to: argv.t || argv.to,
+    to: 'ko',
     sign: sign
   }
   const bar = new ProgressBar('loading [:bar] :rate/bps :percent :etas', {
