@@ -106,7 +106,11 @@ function outputFile (str) {
     content[outputKey[i]] = k
   })
   const name = md5(Date.now() + 'byron')
-  const file = path.join(process.cwd(), `${name}.json`)
+  let outPath = ''
+  if ((argv.o || argv.output)) {
+    outPath = argv.o || argv.output
+  }
+  const file = path.join(process.cwd(), `${outPath}/${name}.json`)
   fs.writeFile(file, JSON.stringify(content), function (err) {
     if (err) {
       return console.log(err)
